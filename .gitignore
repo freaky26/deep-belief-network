@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+import numpy as np
+
+from src.dbn import plot_feature_visualization
+
+
+def main() -> None:
+    repo_root = Path(__file__).resolve().parent.parent
+    features_path = repo_root / "artifacts" / "learned_features.npy"
+
+    if not features_path.exists():
+        raise FileNotFoundError(
+            "No learned features found. Run `python src/train_dbn.py` first to generate the file."
+        )
+
+    features = np.load(features_path)
+    labels = None
+
+    plot_feature_visualization(
+        features,
+        labels=labels,
+        output_path=str(repo_root / "artifacts" / "feature_visualization.png"),
+        title="DBN learned representation",
+    )
+
+    print(f"Visualization saved to {repo_root / 'artifacts' / 'feature_visualization.png'}")
+
+
+if __name__ == "__main__":
+    main()
